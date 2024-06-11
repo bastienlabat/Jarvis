@@ -29,11 +29,13 @@ def main():
 
 
 def load_documents():
+    #Import pdf data with metadata
     document_loader = PyPDFDirectoryLoader(DATA_PATH)
     return document_loader.load()
 
 
 def split_documents(documents: list[Document]):
+    #Splits huge text files in smaller chunks
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=800,
         chunk_overlap=80,
@@ -44,12 +46,18 @@ def split_documents(documents: list[Document]):
 
 
 def add_to_chroma(chunks: list[Document]):
+    #Creates a vector database (basically translates text into numbers that AI models can digest)
+    # Each words gets a vector and if 2 words are related, their distance will be small e.g. airplane and jet
+    #We want to do this COMPLETELY locally therefore we need to host some embedding function on our computer using OLLAMA
+    #This takes place in the get_embedding_function()
+
+
     # Load the existing database.
     db = Chroma(
         persist_directory=CHROMA_PATH, embedding_function=get_embedding_function()
     )
 
-    # Calculate Page IDs.
+    # Calculate Page IDs that will be useful to source AI answers
     chunks_with_ids = calculate_chunk_ids(chunks)
 
     # Add or Update the documents.
