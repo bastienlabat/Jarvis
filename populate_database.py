@@ -14,7 +14,7 @@ DATA_PATH = "data"
 
 def main():
 
-    # Check if the database should be cleared (using the --clear flag).
+    # Check if the database should be cleared (if you want to work on new pdfs you need to clear the previous database: python populate_database.py --reset).
     parser = argparse.ArgumentParser()
     parser.add_argument("--reset", action="store_true", help="Reset the database.")
     args = parser.parse_args()
